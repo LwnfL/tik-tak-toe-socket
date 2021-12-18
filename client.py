@@ -57,11 +57,21 @@ def drawX(x,y):
 def drawO(x,y):
     pygame.draw.circle(window, (0, 255, 0), (x, y), 40, 1)
 
-turnX, turnO = 'x', 'o'
-x = -900
-y = -800
+turnX, turnO = 'o', 'x'
+x = 900
+y = 800
 while True:
-    if turnO=='o':
+    checkwin(d)
+    if turnO=='x':
+        print ("turn o is x")
+        data = conn.recv(1024).decode()
+        data = data.split(',')
+        x = int(data[0])
+        y = int(data[1])
+        print (x,y)
+        turnX, turnO = turnO, turnX
+
+    elif turnO=='o':
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -74,20 +84,14 @@ while True:
                 turnX, turnO = turnO, turnX
                 print("Turn x:", turnX, "Turn o:", turnO)
 
-    elif turnO=='x':
-        data = conn.recv(1024).decode()
-        data = data.split(',')
-        x = int(data[0])
-        y = int(data[1])
-        print (x,y)
-        turnX, turnO = turnO, turnX
+
 
     if 0 < x < 180 and 0< y < 180 and d[1] == '':
         print ("hello")
         if turnX=='x':
             drawX(90, 90)
             d[1] = 'x'
-        elif turnO== 'x':
+        elif turnX== 'o':
             drawO(90,90)
             d[1]='o'
 
@@ -95,11 +99,11 @@ while True:
         if turnX=="x":
             drawX(90, 270)
             d[2] = 'x'
-        elif turnO == 'x':
+        elif turnX == 'o':
             drawO(90, 270)
             d[2] = 'o'
 
-    elif 0 < x < 180 and 360 < y and d[3] == '':
+    elif 0 < x < 180 and 360 < y < 540 and d[3] == '':
         if turnX=="x":
             drawX(90, 450)
             d[3] = 'x'
@@ -129,21 +133,21 @@ while True:
             drawO(270, 450)
             d[6] = 'o'
 
-    elif 360 < x and y < 180 and d[7] == '':
+    elif 360 < x < 540 and y < 180 and d[7] == '':
         if turnX=="x":
             drawX(450, 90)
             d[7] = 'x'
         elif turnX == 'o':
             drawO(450, 90)
             d[7] = 'o'
-    elif 360 < x and 180 < y < 360 and d[8] == '':
+    elif 360 < x < 540 and 180 < y < 360 and d[8] == '':
         if turnX=="x":
             drawX(450, 270)
             d[8] = 'x'
         elif turnX == 'o':
             drawO(450, 270)
             d[8] = 'o'
-    elif 360 < x and 360 < y and d[9] == '':
+    elif 360 < x < 540 and 360 < y < 540 and d[9] == '':
         if turnX=="x":
             drawX(450, 450)
             d[9] = 'x'
