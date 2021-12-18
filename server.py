@@ -1,4 +1,4 @@
-import socket, pygame
+import socket, pygame, time
 from pygame.locals import *
 
 pygame.init()
@@ -6,6 +6,7 @@ window = pygame.display.set_mode((540, 540))
 font = pygame.font.Font('freesansbold.ttf', 32)
 pygame.display.set_caption("server")
 window.fill((0,0,0))
+black=(0,0,0)
 
 d={1:'',2:'',3:'',4:'',5:'',6:'',7:'',8:'',9:''}
 
@@ -63,7 +64,7 @@ def checkwin(d):
 
 def show_x():
     time.sleep(0.5)
-    screen.fill(black)
+    window.fill(black)
     message_display('x win.', 540/2.5, 540/3)
     pygame.display.update()
     time.sleep(5)
@@ -72,7 +73,7 @@ def show_x():
 
 def show_o():
     time.sleep(0.5)
-    screen.fill(black)
+    window.fill(black)
     message_display('o win.', 540/2.5, 540/3)
     pygame.display.update()
     time.sleep(5)
@@ -84,8 +85,8 @@ turnX, turnO='x','o'
 
 x=-70
 y=-80
-
 while done:
+    checkwin(d)
     if turnX=='x':
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -100,13 +101,14 @@ while done:
                 turnX,turnO = turnO,turnX
                 print ("Turn X:",turnX,"Turn O:",turnO)
 
-    elif turnO=='x':
+    elif turnX=='o':
         clientpos = client.recv(1024).decode()
         clientpos = clientpos.split(',')
         x=int(clientpos[0])
         y=int(clientpos[1])
         print(x,y)
         turnX, turnO = turnO, turnX
+
 
     if 0 < x < 180 and 0< y < 180 and d[1] == '':
         if turnO=="x":
@@ -116,7 +118,7 @@ while done:
             drawO(90,90)
             d[1]='o'
 
-    if 0 < x < 180 and 180 < y < 360 and d[2] == '':
+    elif 0 < x < 180 and 180 < y < 360 and d[2] == '':
         if turnO=="x":
             drawX(90, 270)
             d[2] = 'x'
@@ -124,14 +126,14 @@ while done:
             drawO(90, 270)
             d[2] = 'o'
 
-    if 0 < x < 180 and 360 < y and d[3] == '':
+    elif 0 < x < 180 and 360 < y and d[3] == '':
         if turnO=="x":
             drawX(90, 450)
             d[3] = 'x'
         elif turnO == 'o':
             drawO(90, 450)
             d[3] = 'o'
-    if 180 < x < 360 and y < 180 and d[4] == '':
+    elif 180 < x < 360 and y < 180 and d[4] == '':
         if turnO=="x":
             drawX(270, 90)
             d[4] = 'x'
@@ -139,14 +141,14 @@ while done:
             drawO(270, 90)
             d[4] = 'o'
 
-    if 180 < x < 360 and 180 < y < 360 and d[5] == '':
+    elif 180 < x < 360 and 180 < y < 360 and d[5] == '':
         if turnO=="x":
             drawX(270, 270)
             d[5] = 'x'
         elif turnO == 'o':
             drawO(270, 270)
             d[5] = 'o'
-    if 180 < x < 360 and 360 < y and d[6] == '':
+    elif 180 < x < 360 and 360 < y and d[6] == '':
         if turnO=="x":
             drawX(270, 450)
             d[6] = 'x'
@@ -154,21 +156,21 @@ while done:
             drawO(270, 450)
             d[6] = 'o'
 
-    if 360 < x and y < 180 and d[7] == '':
+    elif 360 < x and y < 180 and d[7] == '':
         if turnO=="x":
             drawX(450, 90)
             d[7] = 'x'
         elif turnO == 'o':
             drawO(450, 90)
             d[7] = 'o'
-    if 360 < x and 180 < y < 360 and d[8] == '':
+    elif 360 < x and 180 < y < 360 and d[8] == '':
         if turnO=="x":
             drawX(450, 270)
             d[8] = 'x'
         elif turnO == 'o':
             drawO(450, 270)
             d[8] = 'o'
-    if 360 < x and 360 < y and d[9] == '':
+    elif 360 < x and 360 < y and d[9] == '':
         if turnO=="x":
             drawX(450, 450)
             d[9] = 'x'
